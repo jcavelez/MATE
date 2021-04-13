@@ -134,16 +134,16 @@ class Decoder:
                 if e.errno != errno.EEXIST:
                     raise
 
-        outputFFmpeg = complete_output_path + '\\' + file_name + self.output_format
+        output_ffmpeg = complete_output_path + '\\' + file_name + self.output_format
         streamsList.sort()
         streamsList.reverse()
-        inputFfmpeg = "concat:"
+        input_ffmpeg = "concat:"
         for s in streamsList:
-            inputFfmpeg=inputFfmpeg+s+"|"       
+            input_ffmpeg=input_ffmpeg+s+"|"       
         
-        completeStream = ffmpeg.input(inputFfmpeg)
-        completeStream = ffmpeg.output(completeStream, outputFFmpeg, c='copy')
-        ffmpeg.run(completeStream, overwrite_output=True)
+        complete_stream = ffmpeg.input(input_ffmpeg)
+        complete_stream = ffmpeg.output(complete_stream, output_ffmpeg, c='copy')
+        ffmpeg.run(complete_stream, overwrite_output=True)
   
         for l in streamsList:
             os.remove(l)
