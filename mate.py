@@ -9,6 +9,8 @@
 import sys
 from PyQt5 import uic, QtWidgets
 
+import Decoder
+
 qtCreatorFile = 'main.ui'   #Archivo creado mediante Designer de PyQt5
 Ui_MainWindow, QtBaseClass = uic.loadUiType(qtCreatorFile) #El modulo ui carga el archivo
 app = QtWidgets.QApplication(sys.argv)
