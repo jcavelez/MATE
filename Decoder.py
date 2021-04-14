@@ -57,7 +57,7 @@ class Decoder:
         field from parameters header.'''
         fmt = "{}s".format(data_size)
         data_value = struct.unpack(fmt, data[0:data_size])
-        if data_value == 0:
+        if data_value == (): #antes data_value == 0 // error de comparacion siempre falso
             data_value = struct.unpack(fmt, data[8:data_size])
         data_value = struct.unpack("b", data_value[0])
         return data_value[0]
