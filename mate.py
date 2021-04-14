@@ -10,6 +10,8 @@ from PyQt5.QtGui import QIcon
 from main import Ui_MainWindow  #importando archivo generado pyuic5 main.ui -o main.py
 from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog
 import Decoder
+import logging
+from pathlib import Path
 import signal
 import sqlite3
 import sys
@@ -114,7 +116,65 @@ class MainWindow(QMainWindow):
         self.ui.input_format_label.setEnabled(True)
         self.ui.input_format_text.setEnabled(True)
         self.ui.output_format_label.setEnabled(True)
-        self.ui.output_format_text.setEnabled(True) 
+        self.ui.output_format_text.setEnabled(True)
+    
+    def check_folder(self):
+        '''
+        Metodo para verificar sí hay nuevo contenido en la carpeta procesada. Sí encuentro un nuevo archivo, lo inserta en la BD en 
+        Estado 1
+        :return null
+        '''
+
+        conector = None
+
+        logging.info("Buscando nuevo contenido en Carpeta Entrada: " + self.ui.input_folder_text.text)
+
+        #Se obtienen todos los archivos y se guardan en un arrreglo.
+        files_list = Path(self.ui.input_folder_text.text).rglob('*.mnf')
+
+        #Se recorre todo el arreglo para guardar en base de datos todos los registros en Estado 1
+        for file in files_list:
+            self.insert_new_file(str(file))
+
+        try:
+            conector = sqlite3.connect(self.database_name)
+            cursor = conector.cursor()
+            sql_select = "SELECT ruta FROM Grabaciones WHERE estado=?"
+            cursor.execute(sql_select,'1')
+            path = cursor.fetchall()
+            conector.close()
+            logging.info("Se encontraron " + str(len(path)) + " nuevos archivos para procesar")
+        except sqlite3.Error as e:
+            print(e)
+        
+    def insert_new_file(self, file):
+        '''
+        Metodo para insertar un registro en la tabla llamadas en Estado 1
+        :param rutaGrab
+        :return null
+        '''
+        conector = None
+
+        try:
+            conector = sqlite3.connect(self.database_name)
+            cursor = conector.cursor()
+        except sqlite3.Error as e:
+            print(e)
+
+        sql_consulta = "SELECT * FROM Grabaciones WHERE ruta=?"
+        sql_insert = ''' INSERT INTO Grabaciones
+              VALUES(?,?) '''
+        params = (file,)
+        cursor.execute(sql_consulta,params)
+        ruta = cursor.fetchone()
+
+        if ruta == None:
+            new_registry = (file,1)
+            cursor.execute(sql_insert,new_registry)
+            conector.commit()
+
+        conector.close()
+
 
     def create_converter(self):
         '''
@@ -125,9 +185,11 @@ class MainWindow(QMainWindow):
         self.disable_widgets()
         self.ui.start_button.setIcon(QIcon('stop.svg'))
 
+        self.check_folder()
+
         # Activar de nuevo toda la interface
-        # self.enable_widgets()
-        # self.ui.start_button.setIcon(QIcon('convert.svg'))
+        self.enable_widgets()
+        self.ui.start_button.setIcon(QIcon('convert.svg'))
 
     def start_conversion(self, event):
         print('Iniciando conversion')
