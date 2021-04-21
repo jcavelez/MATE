@@ -10,7 +10,6 @@ from PyQt5.QtGui import QIcon
 from main import Ui_MainWindow  #importando archivo generado pyuic5 main.ui -o main.py
 from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog
 from Decoder import *
-import 
 import logging
 from pathlib import Path
 import signal
@@ -255,7 +254,7 @@ class MainWindow(QMainWindow):
 
         output_path = self.ui.output_folder_text.text()
         subfolder = None
-        output_format = "." + self.ui.output_format_text.currentText().lower()
+        output_format = "." + self.ui.output_format_text.currentItem().text().lower()
 
         while not self.shutdown_flag.is_set():
             path_to_file = self.get_not_processed()
