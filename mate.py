@@ -9,13 +9,15 @@
 from PyQt5.QtGui import QIcon
 from main import Ui_MainWindow  #importando archivo generado pyuic5 main.ui -o main.py
 from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog
-import Decoder
+from Decoder import *
+import 
 import logging
 from pathlib import Path
 import signal
 import sqlite3
 import sys
 import threading
+import time
 
 
 
@@ -38,6 +40,9 @@ class MainWindow(QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
 
+        os.remove('MATE_DB.db') # <------------------------------ BORRAR
+        self.ui.input_folder_text.setText('C:/Users/jcave/OneDrive/Escritorio/AudiosNice_')
+        self.ui.output_folder_text.setText('C:/Users/jcave/OneDrive/Escritorio/Salida')
         self.database_name = 'MATE_DB.db'
         self.conector_BD = sqlite3.connect(self.database_name)
         self.cursor_main = self.conector_BD.cursor()
@@ -68,7 +73,7 @@ class MainWindow(QMainWindow):
 
     def get_folder(self):
         file_dialog = QFileDialog()
-        folder = file_dialog.getExistingDirectory(self, 'Seleccione carpeta')
+        folder = file_dialog.getExistingDirectory(self, 'Seleccione carpeta', 'C:/Users/jcave/OneDrive/Escritorio/')
 
         return folder
 
@@ -127,14 +132,14 @@ class MainWindow(QMainWindow):
 
         conector = None
 
-        logging.info("Buscando nuevo contenido en Carpeta Entrada: " + self.ui.input_folder_text.text)
+        logging.info("Buscando nuevo contenido en Carpeta Entrada: " + self.ui.input_folder_text.text())
 
         #Se obtienen todos los archivos y se guardan en un arrreglo.
-        files_list = Path(self.ui.input_folder_text.text).rglob('*.mnf')
+        files_list = Path(self.ui.input_folder_text.text()).rglob('*.mnf')
 
         #Se recorre todo el arreglo para guardar en base de datos todos los registros en Estado 1
         for file in files_list:
-            self.insert_new_file(str(file))
+            self.insert_new_file(str(file).replace('\\', '/'))
 
         try:
             conector = sqlite3.connect(self.database_name)
@@ -175,6 +180,67 @@ class MainWindow(QMainWindow):
 
         conector.close()
 
+    def get_not_processed(self):
+        '''
+        Metodo para devolver 1 registro en estado 1 (No Procesado)
+        : return string
+        '''
+        conector = None
+        path = ""
+
+        try:
+            conector = sqlite3.connect(self.database_name)
+            cursor = conector.cursor()
+        except sqlite3.Error as e:
+            print(e)
+
+        sql_insert = "SELECT ruta FROM Grabaciones WHERE estado=?"
+        try:
+            cursor.execute(sql_insert,'1')
+            path = cursor.fetchone()
+            conector.close()
+            return path[0]
+        except IndexError:
+            return path
+
+    def update_status(self,ruta,estado):
+        '''
+        Metodo para actualizar el estado de una grabación
+        :param ruta str
+        : return null
+        '''
+        conectorHilo = None
+
+        try:
+            conectorHilo = sqlite3.connect(self.database_name)
+            cursorHilo = conectorHilo.cursor()
+        except sqlite3.Error as e:
+            print(e)
+
+        sqlUpdate = "UPDATE Grabaciones SET estado=? WHERE ruta=?"
+        sqlParams = (estado,ruta)
+
+        cursorHilo.execute(sqlUpdate,sqlParams)
+        conectorHilo.commit()
+        conectorHilo.close()
+
+    def detect_subfolder(self, complete_path, root_folder):
+        complete_path = complete_path.split('/')
+        root_folder = root_folder.split('/')
+        # complete_path = complete_path.split('\\')
+        # root_folder = root_folder.split('\\')
+
+        if len(complete_path) == len(root_folder):
+            return None
+        
+        subfolder = complete_path[len(root_folder) : -1]
+        
+        return '\\'.join(subfolder)
+
+    def delete_processed(self, file):
+        if self.ui.delete_processed_text.currentIndex() == 'No':
+            os.remove(file)
+            logging.info("Archivo borrado: "+ file)   
 
     def create_converter(self):
         '''
@@ -186,6 +252,30 @@ class MainWindow(QMainWindow):
         self.ui.start_button.setIcon(QIcon('stop.svg'))
 
         self.check_folder()
+
+        output_path = self.ui.output_folder_text.text()
+        subfolder = None
+        output_format = "." + self.ui.output_format_text.currentText().lower()
+
+        while not self.shutdown_flag.is_set():
+            path_to_file = self.get_not_processed()
+            if path_to_file != None:
+                subfolder = self.detect_subfolder(path_to_file, self.ui.output_folder_text.text()) 
+                self.update_status(path_to_file, 2)
+                deco = Decoder(path_to_file, output_path, subfolder, output_format)
+                deco.convert_to()
+                self.update_status(path_to_file,3)
+                self.delete_processed(path_to_file)
+                logging.info("Finaliza conversión de "+ path_to_file + " a " 
+                    + output_format)
+            else:
+                logging.info("No hay archivos pendientes por procesar")
+                if self.ui.recurrence_text.currentText() == 'No':
+                    self.shutdown_flag.set()
+                    break
+                time.sleep(10)
+                ######## OJOOOOOOOO VERIFICA TOOOOODA LA CARPETA OTRA VEZ###############################
+                self.check_folder()
 
         # Activar de nuevo toda la interface
         self.enable_widgets()

@@ -49,7 +49,7 @@ class Decoder:
             data_size = struct.unpack("i", data[i + 2:i + 6])[0]
             data = struct.unpack("16s", data[i + 6:i + 22])[0]
             if type_id == 10:
-                return Decoder.get_data_value(data, data_size)
+                return self.get_data_value(data, data_size)
 
 
     def get_data_value(self, data, data_size):
@@ -91,12 +91,11 @@ class Decoder:
     def convert_to(self):
         #"Convert raw audio data using ffmpeg and subprocess."
         file_name = os.path.splitext(self.path_to_file)[0]
-        
-        file_name = file_name.split('\\')
+        file_name = file_name.split('/')
         file_name = file_name[-1]
         previous_stream_id = -1
         processes = {}
-        streamsList = []
+        streams_list = []
         for compression, stream_id, raw_audio_chunk in self.chunks_generator():
             if stream_id != previous_stream_id and not processes.get(stream_id):
                 self.output_file = file_name + "_stream{}".format(stream_id) + self.output_format
@@ -116,8 +115,8 @@ class Decoder:
             processes[stream_id].stdin.write(raw_audio_chunk)
 
             # Se agrega en stream a una lista para luego concatenarlos
-            if (self.output_file in streamsList) == False:
-                streamsList.append(self.output_file)
+            if (self.output_file in streams_list) == False:
+                streams_list.append(self.output_file)
 
         for key in processes.keys():
             processes[key].stdin.close()
@@ -133,19 +132,19 @@ class Decoder:
             except OSError as e:
                 if e.errno != errno.EEXIST:
                     raise
-
-        output_ffmpeg = complete_output_path + '\\' + file_name + self.output_format
-        streamsList.sort()
-        streamsList.reverse()
+        
+        output_file_name = complete_output_path + '/' + file_name + self.output_format
+        streams_list.sort()
+        streams_list.reverse()
         input_ffmpeg = "concat:"
-        for s in streamsList:
+        for s in streams_list:
             input_ffmpeg=input_ffmpeg+s+"|"       
         
         complete_stream = ffmpeg.input(input_ffmpeg)
-        complete_stream = ffmpeg.output(complete_stream, output_ffmpeg, c='copy')
+        complete_stream = ffmpeg.output(complete_stream, output_file_name, c='copy')
         ffmpeg.run(complete_stream, overwrite_output=True)
   
-        for l in streamsList:
+        for l in streams_list:
             os.remove(l)
 
     ### Fin clase Convertidor    
