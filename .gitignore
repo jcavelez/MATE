@@ -2,3 +2,7 @@ mate_venv/
 venv/
 .db
 .log
+.wav
+.mp3
+.opus
+.m4a

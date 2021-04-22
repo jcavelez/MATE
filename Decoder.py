@@ -21,8 +21,9 @@ class Decoder:
                 19: "adpcm_g722"
             }
 
-    def __init__(self, path_to_file, output_path, subfolders, output_format):
+    def __init__(self, path_to_file, input_format, output_path, subfolders, output_format):
         self.path_to_file = path_to_file
+        self.input_format = input_format
         self.output_path = output_path
         self.subfolders = subfolders
         self.output_format = output_format
@@ -96,31 +97,34 @@ class Decoder:
         previous_stream_id = -1
         processes = {}
         streams_list = []
-        for compression, stream_id, raw_audio_chunk in self.chunks_generator():
-            if stream_id != previous_stream_id and not processes.get(stream_id):
-                self.output_file = file_name + "_stream{}".format(stream_id) + self.output_format
-                cmd_args = []
-                cmd_args.append("ffmpeg")   #Llamada a ejecutable ffmpeg que debe estar en System32 
-                cmd_args.append("-hide_banner") #Oculta consola
-                cmd_args.append("-y")   #Sobreescribir si el archivo ya existe
-                cmd_args.append("-f")
-                cmd_args.append(self.codecs[compression])
-                cmd_args.append("-i")
-                cmd_args.append("pipe:0")   #nombre archivo de entrada
-                cmd_args.append(self.output_file)    #Ej: ffmpeg -hide_banner -y -f codec -i archivo.nmf archivo_Stream.wav
-                print(cmd_args)
-                processes[stream_id] = subprocess.Popen(cmd_args,stdin=subprocess.PIPE)
-                previous_stream_id = stream_id
 
-            processes[stream_id].stdin.write(raw_audio_chunk)
 
-            # Se agrega en stream a una lista para luego concatenarlos
-            if (self.output_file in streams_list) == False:
-                streams_list.append(self.output_file)
+        if self.input_format == 'nmf':
+            for compression, stream_id, raw_audio_chunk in self.chunks_generator():
+                if stream_id != previous_stream_id and not processes.get(stream_id):
+                    self.output_file = file_name + "_stream{}".format(stream_id) + self.output_format
+                    cmd_args = []
+                    cmd_args.append("ffmpeg")   #Llamada a ejecutable ffmpeg que debe estar en System32 
+                    cmd_args.append("-hide_banner") #Oculta consola
+                    cmd_args.append("-y")   #Sobreescribir si el archivo ya existe
+                    cmd_args.append("-f")
+                    cmd_args.append(self.codecs[compression])
+                    cmd_args.append("-i")
+                    cmd_args.append("pipe:0")   #nombre archivo de entrada
+                    cmd_args.append(self.output_file)    #Ej: ffmpeg -hide_banner -y -f codec -i archivo.nmf archivo_Stream.wav
+                    print(cmd_args)
+                    processes[stream_id] = subprocess.Popen(cmd_args,stdin=subprocess.PIPE)
+                    previous_stream_id = stream_id
 
-        for key in processes.keys():
-            processes[key].stdin.close()
-            processes[key].wait()
+                processes[stream_id].stdin.write(raw_audio_chunk)
+
+                # Se agrega en stream a una lista para luego concatenarlos
+                if (self.output_file in streams_list) == False:
+                    streams_list.append(self.output_file)
+
+            for key in processes.keys():
+                processes[key].stdin.close()
+                processes[key].wait()
 
         #Iniciando concatenación. Ej: ffmpeg.input('concat:arch1mnf|arch2.mnf|arch3.mnf').output('arch.wav', c='copy').run()
         complete_output_path = self.output_path
@@ -142,7 +146,7 @@ class Decoder:
         
         complete_stream = ffmpeg.input(input_ffmpeg)
         complete_stream = ffmpeg.output(complete_stream, output_file_name, c='copy')
-        ffmpeg.run(complete_stream, overwrite_output=True)
+        ffmpeg.run(complete_stream, overwrite_output=True, quiet=True)
   
         for l in streams_list:
             os.remove(l)

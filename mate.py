@@ -6,9 +6,11 @@
 #======================
 # imports
 #======================
+
 from PyQt5.QtGui import QIcon
 from main import Ui_MainWindow  #importando archivo generado pyuic5 main.ui -o main.py
 from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog
+from PyQt5.QtCore import QThread, pyqtSignal
 from Decoder import *
 import logging
 from pathlib import Path
@@ -19,6 +21,19 @@ import threading
 import time
 
 
+TIME_LIMIT = 100
+
+
+class External(QThread):
+    count_changed = pyqtSignal(int)
+
+    def run(self):
+        count = 0
+        while count < TIME_LIMIT:
+            count +=1
+            time.sleep(1)
+            self.count_changed.emit(count)
+
 
 class ServiceExit(Exception):
     """
@@ -26,11 +41,7 @@ class ServiceExit(Exception):
     """
     pass
 
-def service_shutdown(signum, frame):
-    '''
-    Método para detener el Thread de crearConvertidor mediante el lanzamiento de una excepción
-    '''
-    raise ServiceExit
+
 
 
 class MainWindow(QMainWindow):
@@ -199,7 +210,7 @@ class MainWindow(QMainWindow):
             path = cursor.fetchone()
             conector.close()
             return path[0]
-        except IndexError:
+        except:
             return path
 
     def update_status(self,ruta,estado):
@@ -208,26 +219,24 @@ class MainWindow(QMainWindow):
         :param ruta str
         : return null
         '''
-        conectorHilo = None
+        conector = None
 
         try:
-            conectorHilo = sqlite3.connect(self.database_name)
-            cursorHilo = conectorHilo.cursor()
+            conector = sqlite3.connect(self.database_name)
+            cursor = conector.cursor()
         except sqlite3.Error as e:
             print(e)
 
-        sqlUpdate = "UPDATE Grabaciones SET estado=? WHERE ruta=?"
-        sqlParams = (estado,ruta)
+        sql_update = "UPDATE Grabaciones SET estado=? WHERE ruta=?"
+        sql_params = (estado,ruta)
 
-        cursorHilo.execute(sqlUpdate,sqlParams)
-        conectorHilo.commit()
-        conectorHilo.close()
+        cursor.execute(sql_update,sql_params)
+        conector.commit()
+        conector.close()
 
     def detect_subfolder(self, complete_path, root_folder):
         complete_path = complete_path.split('/')
         root_folder = root_folder.split('/')
-        # complete_path = complete_path.split('\\')
-        # root_folder = root_folder.split('\\')
 
         if len(complete_path) == len(root_folder):
             return None
@@ -251,7 +260,7 @@ class MainWindow(QMainWindow):
         self.ui.start_button.setIcon(QIcon('stop.svg'))
 
         self.check_folder()
-
+        input_format = self.ui.input_format_text.currentItem().text().lower()
         output_path = self.ui.output_folder_text.text()
         subfolder = None
         output_format = "." + self.ui.output_format_text.currentItem().text().lower()
@@ -259,9 +268,10 @@ class MainWindow(QMainWindow):
         while not self.shutdown_flag.is_set():
             path_to_file = self.get_not_processed()
             if path_to_file != None:
-                subfolder = self.detect_subfolder(path_to_file, self.ui.output_folder_text.text()) 
+                subfolder = self.detect_subfolder(path_to_file, self.ui.output_folder_text.text())
+                self.ui.message_label.setText(str(path_to_file))
                 self.update_status(path_to_file, 2)
-                deco = Decoder(path_to_file, output_path, subfolder, output_format)
+                deco = Decoder(path_to_file, input_format, output_path, subfolder, output_format)
                 deco.convert_to()
                 self.update_status(path_to_file,3)
                 self.delete_processed(path_to_file)
@@ -279,6 +289,12 @@ class MainWindow(QMainWindow):
         # Activar de nuevo toda la interface
         self.enable_widgets()
         self.ui.start_button.setIcon(QIcon('convert.svg'))
+    
+    def service_shutdown(self, signum, frame):
+        '''
+        Método para detener el Thread de crearConvertidor mediante el lanzamiento de una excepción
+        '''
+        raise ServiceExit
 
     def start_conversion(self, event):
         print('Iniciando conversion')
@@ -287,14 +303,13 @@ class MainWindow(QMainWindow):
         :return null
         '''
         # Se registran señales para parar el Thread
-        signal.signal(signal.SIGTERM, service_shutdown)
-        signal.signal(signal.SIGINT, service_shutdown)
+        signal.signal(signal.SIGTERM, self.service_shutdown)
+        signal.signal(signal.SIGINT, self.service_shutdown)
         self.shutdown_flag = threading.Event()
         #Se crea un Thread para manejar cada conversión con el método crearConvertidor
         self.run_thread = threading.Thread(target=self.create_converter)
         self.run_thread.setDaemon(True) 
-        self.run_thread.start()
-        
+        self.run_thread.start()       
         
 
 if __name__ == '__main__':
