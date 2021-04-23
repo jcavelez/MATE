@@ -49,8 +49,10 @@ class MainWindow(QMainWindow):
         super(MainWindow, self).__init__()
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
-
-        os.remove('MATE_DB.db') # <------------------------------ BORRAR
+        try:
+            os.remove('MATE_DB.db') # <------------------------------ BORRAR
+        except:
+            pass
         self.ui.input_folder_text.setText('C:/Users/jcave/OneDrive/Escritorio/AudiosNice_')
         self.ui.output_folder_text.setText('C:/Users/jcave/OneDrive/Escritorio/Salida')
         self.database_name = 'MATE_DB.db'
@@ -133,7 +135,7 @@ class MainWindow(QMainWindow):
         self.ui.output_format_label.setEnabled(True)
         self.ui.output_format_text.setEnabled(True)
     
-    def check_folder(self):
+    def check_folder(self, format):
         '''
         Metodo para verificar sí hay nuevo contenido en la carpeta procesada. Sí encuentro un nuevo archivo, lo inserta en la BD en 
         Estado 1
@@ -145,7 +147,7 @@ class MainWindow(QMainWindow):
         logging.info("Buscando nuevo contenido en Carpeta Entrada: " + self.ui.input_folder_text.text())
 
         #Se obtienen todos los archivos y se guardan en un arrreglo.
-        files_list = Path(self.ui.input_folder_text.text()).rglob('*.mnf')
+        files_list = Path(self.ui.input_folder_text.text()).rglob(f'*.{format}')
 
         #Se recorre todo el arreglo para guardar en base de datos todos los registros en Estado 1
         for file in files_list:
@@ -259,8 +261,8 @@ class MainWindow(QMainWindow):
         self.disable_widgets()
         self.ui.start_button.setIcon(QIcon('stop.svg'))
 
-        self.check_folder()
         input_format = self.ui.input_format_text.currentItem().text().lower()
+        self.check_folder(input_format)
         output_path = self.ui.output_folder_text.text()
         subfolder = None
         output_format = "." + self.ui.output_format_text.currentItem().text().lower()
@@ -271,6 +273,8 @@ class MainWindow(QMainWindow):
                 subfolder = self.detect_subfolder(path_to_file, self.ui.output_folder_text.text())
                 self.ui.message_label.setText(str(path_to_file))
                 self.update_status(path_to_file, 2)
+                print('Crear convertidor ')
+                print(path_to_file)
                 deco = Decoder(path_to_file, input_format, output_path, subfolder, output_format)
                 deco.convert_to()
                 self.update_status(path_to_file,3)
@@ -284,7 +288,7 @@ class MainWindow(QMainWindow):
                     break
                 time.sleep(10)
                 ######## OJOOOOOOOO VERIFICA TOOOOODA LA CARPETA OTRA VEZ###############################
-                self.check_folder()
+                self.check_folder(input_format)
 
         # Activar de nuevo toda la interface
         self.enable_widgets()

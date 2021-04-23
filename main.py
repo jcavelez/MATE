@@ -726,7 +726,7 @@ class Ui_MainWindow(object):
         self.progress_bar.setInvertedAppearance(False)
         self.progress_bar.setObjectName("progress_bar")
         self.input_format_text = QtWidgets.QListWidget(self.centralwidget)
-        self.input_format_text.setEnabled(False)
+        self.input_format_text.setEnabled(True)
         self.input_format_text.setGeometry(QtCore.QRect(70, 350, 141, 94))
         font = QtGui.QFont()
         font.setFamily("Microsoft JhengHei UI")
@@ -1120,7 +1120,7 @@ class Ui_MainWindow(object):
         self.menubar.addAction(self.menuAyuda.menuAction())
 
         self.retranslateUi(MainWindow)
-        self.input_format_text.setCurrentRow(1)
+        self.input_format_text.setCurrentRow(0)
         self.output_format_text.setCurrentRow(0)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
@@ -1139,7 +1139,7 @@ class Ui_MainWindow(object):
         item = self.input_format_text.item(0)
         item.setText(_translate("MainWindow", "GSM"))
         item = self.input_format_text.item(1)
-        item.setText(_translate("MainWindow", "NMF"))
+        item.setText(_translate("MainWindow", "MNF"))
         self.input_format_text.setSortingEnabled(__sortingEnabled)
         __sortingEnabled = self.output_format_text.isSortingEnabled()
         self.output_format_text.setSortingEnabled(False)

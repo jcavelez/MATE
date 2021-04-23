@@ -2137,7 +2137,7 @@
    </widget>
    <widget class="QListWidget" name="input_format_text">
     <property name="enabled">
-     <bool>false</bool>
+     <bool>true</bool>
     </property>
     <property name="geometry">
      <rect>
@@ -2161,7 +2161,7 @@
      <number>110</number>
     </property>
     <property name="currentRow">
-     <number>1</number>
+     <number>0</number>
     </property>
     <item>
      <property name="text">
@@ -2170,7 +2170,7 @@
     </item>
     <item>
      <property name="text">
-      <string>NMF</string>
+      <string>MNF</string>
      </property>
     </item>
    </widget>

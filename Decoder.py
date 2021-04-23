@@ -27,6 +27,9 @@ class Decoder:
         self.output_path = output_path
         self.subfolders = subfolders
         self.output_format = output_format
+        print()
+        print(path_to_file)
+        print(input_format)
 
     
     #Métodos de conversión de audio       
@@ -99,16 +102,16 @@ class Decoder:
         streams_list = []
 
 
-        if self.input_format == 'nmf':
+        if self.input_format == 'mnf':
             for compression, stream_id, raw_audio_chunk in self.chunks_generator():
                 if stream_id != previous_stream_id and not processes.get(stream_id):
                     self.output_file = file_name + "_stream{}".format(stream_id) + self.output_format
                     cmd_args = []
                     cmd_args.append("ffmpeg")   #Llamada a ejecutable ffmpeg que debe estar en System32 
                     cmd_args.append("-hide_banner") #Oculta consola
-                    cmd_args.append("-y")   #Sobreescribir si el archivo ya existe
+                    cmd_args.append("-y")   #overwrite output files
                     cmd_args.append("-f")
-                    cmd_args.append(self.codecs[compression])
+                    cmd_args.append(self.codecs[compression]) #force format
                     cmd_args.append("-i")
                     cmd_args.append("pipe:0")   #nombre archivo de entrada
                     cmd_args.append(self.output_file)    #Ej: ffmpeg -hide_banner -y -f codec -i archivo.nmf archivo_Stream.wav
@@ -126,29 +129,51 @@ class Decoder:
                 processes[key].stdin.close()
                 processes[key].wait()
 
-        #Iniciando concatenación. Ej: ffmpeg.input('concat:arch1mnf|arch2.mnf|arch3.mnf').output('arch.wav', c='copy').run()
-        complete_output_path = self.output_path
-        if self.subfolders is not None:
-            complete_output_path = os.path.join(self.output_path, self.subfolders)
-            try:
-                if self.subfolders is not None:
-                    os.makedirs(complete_output_path)
-            except OSError as e:
-                if e.errno != errno.EEXIST:
-                    raise
+            streams_list.sort()
+            streams_list.reverse()
+
+            input_ffmpeg = "concat:"
+            for s in streams_list:
+                input_ffmpeg = input_ffmpeg + s + "|"
+            
+            #Iniciando concatenación. Ej: ffmpeg.input('concat:arch1mnf|arch2.mnf|arch3.mnff').output('arch.wav', c='copy').run()
+            complete_output_path = self.output_path
+            #Crear subcarpetas
+            if self.subfolders is not None:
+                complete_output_path = os.path.join(self.output_path, self.subfolders)
+                try:
+                    if self.subfolders is not None:
+                        os.makedirs(complete_output_path)
+                except OSError as e:
+                    if e.errno != errno.EEXIST:
+                        raise
+            
+            output_file_name = complete_output_path + '/' + file_name + self.output_format
+            complete_stream = ffmpeg.input(input_ffmpeg)
+            complete_stream = ffmpeg.output(complete_stream, output_file_name, c='copy')
+            print()
+            print()
+            ffmpeg.run(complete_stream, overwrite_output=True, quiet=False)
+    
+            for l in streams_list:
+                os.remove(l)
+
+        else:
+            complete_output_path = self.output_path
+            #Crear subcarpetas
+            if self.subfolders is not None:
+                complete_output_path = os.path.join(self.output_path, self.subfolders)
+                try:
+                    if self.subfolders is not None:
+                        os.makedirs(complete_output_path)
+                except OSError as e:
+                    if e.errno != errno.EEXIST:
+                        raise
+            output_file_name = complete_output_path + '/' + file_name + self.output_format
+            stream = ffmpeg.input(self.path_to_file)
+            stream_output = ffmpeg.output(stream, output_file_name)
+            ffmpeg.run(stream_output, overwrite_output=True, quiet=False)
+
         
-        output_file_name = complete_output_path + '/' + file_name + self.output_format
-        streams_list.sort()
-        streams_list.reverse()
-        input_ffmpeg = "concat:"
-        for s in streams_list:
-            input_ffmpeg=input_ffmpeg+s+"|"       
-        
-        complete_stream = ffmpeg.input(input_ffmpeg)
-        complete_stream = ffmpeg.output(complete_stream, output_file_name, c='copy')
-        ffmpeg.run(complete_stream, overwrite_output=True, quiet=True)
-  
-        for l in streams_list:
-            os.remove(l)
 
     ### Fin clase Convertidor    
