@@ -49,15 +49,20 @@ class MainWindow(QMainWindow):
         super(MainWindow, self).__init__()
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
+
         try:
             os.remove('MATE_DB.db') # <------------------------------ BORRAR
-        except:
+        except sqlite3.Error:
             pass
-        self.ui.input_folder_text.setText('C:/Users/jcave/OneDrive/Escritorio/AudiosNice_')
+
+
+        self.ui.input_folder_text.setText('C:/Users/jcave/OneDrive/Escritorio/AudiosNice_') #<---- Borrar
         self.ui.output_folder_text.setText('C:/Users/jcave/OneDrive/Escritorio/Salida')
+
         self.database_name = 'MATE_DB.db'
         self.conector_BD = sqlite3.connect(self.database_name)
         self.cursor_main = self.conector_BD.cursor()
+
         #Inicializando BD
         try:
             self.cursor_main.execute('''CREATE TABLE Grabaciones (
@@ -76,8 +81,13 @@ class MainWindow(QMainWindow):
                     ]
             self.cursor_main.executemany('INSERT INTO Estados VALUES (?,?)', estados)
             self.conector_BD.commit()
-        except:
+        except sqlite3.Error:
             pass
+
+        self.ui.more_options_label.clicked.connect(self.show_more_options)
+        self.ui.more_options_button.clicked.connect(self.show_more_options)
+
+        self.hide_more_options()
 
         self.ui.start_button.clicked.connect(self.start_conversion)
         self.ui.input_folder_button.clicked.connect(self.set_input_folder)
@@ -97,25 +107,6 @@ class MainWindow(QMainWindow):
         folder = self.get_folder()
         self.ui.output_folder_text.setText(folder)
     
-    def disable_widgets(self):
-        print('deshabilitando widgets')
-        self.ui.input_folder_label.setEnabled(False)
-        self.ui.input_folder_text.setEnabled(False)
-        self.ui.input_folder_button.setEnabled(False)
-        self.ui.output_folder_label.setEnabled(False)
-        self.ui.output_folder_text.setEnabled(False)
-        self.ui.output_folder_button.setEnabled(False)
-        self.ui.more_option_label.setEnabled(False)
-        self.ui.more_options_button.setEnabled(False)
-        self.ui.delete_processed_label.setEnabled(False)
-        self.ui.delete_processed_text.setEnabled(False)
-        self.ui.recurrence_label.setEnabled(False)
-        self.ui.recurrence_text.setEnabled(False)
-        self.ui.input_format_label.setEnabled(False)
-        self.ui.input_format_text.setEnabled(False)
-        self.ui.output_format_label.setEnabled(False)
-        self.ui.output_format_text.setEnabled(False)        
-    
     def enable_widgets(self):
         print('habilitando widgets')
         self.ui.input_folder_label.setEnabled(True)
@@ -124,7 +115,7 @@ class MainWindow(QMainWindow):
         self.ui.output_folder_label.setEnabled(True)
         self.ui.output_folder_text.setEnabled(True)
         self.ui.output_folder_button.setEnabled(True)
-        self.ui.more_option_label.setEnabled(True)
+        self.ui.more_options_label.setEnabled(True)
         self.ui.more_options_button.setEnabled(True)
         self.ui.delete_processed_label.setEnabled(True)
         self.ui.delete_processed_text.setEnabled(True)
@@ -135,6 +126,45 @@ class MainWindow(QMainWindow):
         self.ui.output_format_label.setEnabled(True)
         self.ui.output_format_text.setEnabled(True)
     
+    def disable_widgets(self):
+        print('deshabilitando widgets')
+        self.ui.input_folder_label.setEnabled(False)
+        self.ui.input_folder_text.setEnabled(False)
+        self.ui.input_folder_button.setEnabled(False)
+        self.ui.output_folder_label.setEnabled(False)
+        self.ui.output_folder_text.setEnabled(False)
+        self.ui.output_folder_button.setEnabled(False)
+        self.ui.more_options_label.setEnabled(False)
+        self.ui.more_options_button.setEnabled(False)
+        self.ui.delete_processed_label.setEnabled(False)
+        self.ui.delete_processed_text.setEnabled(False)
+        self.ui.recurrence_label.setEnabled(False)
+        self.ui.recurrence_text.setEnabled(False)
+        self.ui.input_format_label.setEnabled(False)
+        self.ui.input_format_text.setEnabled(False)
+        self.ui.output_format_label.setEnabled(False)
+        self.ui.output_format_text.setEnabled(False)        
+    
+    def show_more_options(self):
+        self.move_widgets_down()
+        self.ui.more_options_frame.show()
+        self.ui.more_options_label.clicked.connect(self.hide_more_options)
+        self.ui.more_options_button.clicked.connect(self.hide_more_options)
+        self.ui.more_options_button.setIcon(QIcon('up-arrow.svg'))
+
+    def hide_more_options(self):
+        self.move_widgets_up()
+        self.ui.more_options_frame.hide()
+        self.ui.more_options_label.clicked.connect(self.show_more_options)
+        self.ui.more_options_button.clicked.connect(self.show_more_options)
+        self.ui.more_options_button.setIcon(QIcon('downarrow.svg'))
+
+    def move_widgets_down(self):
+        self.ui.down_frame.setGeometry(10, 310, 521, 151)
+    
+    def move_widgets_up(self):
+        self.ui.down_frame.setGeometry(10, 270, 521, 151)
+      
     def check_folder(self, format):
         '''
         Metodo para verificar sí hay nuevo contenido en la carpeta procesada. Sí encuentro un nuevo archivo, lo inserta en la BD en 
@@ -215,7 +245,7 @@ class MainWindow(QMainWindow):
         except:
             return path
 
-    def update_status(self,ruta,estado):
+    def update_status(self, ruta, estado):
         '''
         Metodo para actualizar el estado de una grabación
         :param ruta str
@@ -283,6 +313,7 @@ class MainWindow(QMainWindow):
                     + output_format)
             else:
                 logging.info("No hay archivos pendientes por procesar")
+                self.ui.message_label.setText(f'No hay archivos {output_format} pendientes por procesar en {self.ui.input_folder_text.text()}')
                 if self.ui.recurrence_text.currentText() == 'No':
                     self.shutdown_flag.set()
                     break
