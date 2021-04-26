@@ -57,13 +57,8 @@ class MainWindow(QMainWindow):
 
         self.database_name = 'MATE_DB.db'
 
-        try:
-            os.remove(self.database_name)
-        except:
-            pass
-
-        self.ui.input_folder_text.setText('C:/Users/jcave/OneDrive/Escritorio/AudiosNice_') #<---- Borrar
-        self.ui.output_folder_text.setText('C:/Users/jcave/OneDrive/Escritorio/Salida')
+        self.ui.input_folder_text.setText('') #<---- Borrar
+        self.ui.output_folder_text.setText('')
 
         self.conector_BD = sqlite3.connect(self.database_name)
         self.cursor_main = self.conector_BD.cursor()
