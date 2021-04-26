@@ -11,6 +11,7 @@ from PyQt5.QtGui import QIcon
 from main import Ui_MainWindow  #importando archivo generado pyuic5 main.ui -o main.py
 from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog
 from PyQt5.QtCore import QThread, pyqtSignal
+import datetime
 from Decoder import *
 import logging
 from pathlib import Path
@@ -22,6 +23,10 @@ import time
 
 
 TIME_LIMIT = 100
+
+LOG_FILENAME = datetime.datetime.now().strftime('logfile_%Y_%m_%d.log')
+
+logging.basicConfig(filename=LOG_FILENAME, level=logging.INFO, format='%(asctime)s - %(message)s')
 
 
 class External(QThread):
@@ -50,16 +55,16 @@ class MainWindow(QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
 
-        try:
-            os.remove('MATE_DB.db') # <------------------------------ BORRAR
-        except sqlite3.Error:
-            pass
+        self.database_name = 'MATE_DB.db'
 
+        try:
+            os.remove(self.database_name)
+        except:
+            pass
 
         self.ui.input_folder_text.setText('C:/Users/jcave/OneDrive/Escritorio/AudiosNice_') #<---- Borrar
         self.ui.output_folder_text.setText('C:/Users/jcave/OneDrive/Escritorio/Salida')
 
-        self.database_name = 'MATE_DB.db'
         self.conector_BD = sqlite3.connect(self.database_name)
         self.cursor_main = self.conector_BD.cursor()
 
@@ -108,7 +113,6 @@ class MainWindow(QMainWindow):
         self.ui.output_folder_text.setText(folder)
     
     def enable_widgets(self):
-        print('habilitando widgets')
         self.ui.input_folder_label.setEnabled(True)
         self.ui.input_folder_text.setEnabled(True)
         self.ui.input_folder_button.setEnabled(True)
@@ -127,7 +131,6 @@ class MainWindow(QMainWindow):
         self.ui.output_format_text.setEnabled(True)
     
     def disable_widgets(self):
-        print('deshabilitando widgets')
         self.ui.input_folder_label.setEnabled(False)
         self.ui.input_folder_text.setEnabled(False)
         self.ui.input_folder_button.setEnabled(False)
@@ -303,8 +306,6 @@ class MainWindow(QMainWindow):
                 subfolder = self.detect_subfolder(path_to_file, self.ui.output_folder_text.text())
                 self.ui.message_label.setText(str(path_to_file))
                 self.update_status(path_to_file, 2)
-                print('Crear convertidor ')
-                print(path_to_file)
                 deco = Decoder(path_to_file, input_format, output_path, subfolder, output_format)
                 deco.convert_to()
                 self.update_status(path_to_file,3)
@@ -312,8 +313,8 @@ class MainWindow(QMainWindow):
                 logging.info("Finaliza conversión de "+ path_to_file + " a " 
                     + output_format)
             else:
-                logging.info("No hay archivos pendientes por procesar")
-                self.ui.message_label.setText(f'No hay archivos {output_format} pendientes por procesar en {self.ui.input_folder_text.text()}')
+                logging.info(f'No hay archivos {self.ui.input_format_text.currentItem().text()} pendientes por procesar en {self.ui.input_folder_text.text()}')
+                self.ui.message_label.setText(f'No hay archivos {self.ui.input_format_text.currentItem().text()} pendientes por procesar')
                 if self.ui.recurrence_text.currentText() == 'No':
                     self.shutdown_flag.set()
                     break
@@ -332,7 +333,6 @@ class MainWindow(QMainWindow):
         raise ServiceExit
 
     def start_conversion(self, event):
-        print('Iniciando conversion')
         '''
         Metodo iniciar el Thread que llama al método create_Converter()
         :return null
@@ -344,7 +344,8 @@ class MainWindow(QMainWindow):
         #Se crea un Thread para manejar cada conversión con el método crearConvertidor
         self.run_thread = threading.Thread(target=self.create_converter)
         self.run_thread.setDaemon(True) 
-        self.run_thread.start()       
+        self.run_thread.start()
+
         
 
 if __name__ == '__main__':
