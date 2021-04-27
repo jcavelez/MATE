@@ -148,14 +148,14 @@ class MainWindow(QMainWindow):
         self.ui.more_options_frame.show()
         self.ui.more_options_label.clicked.connect(self.hide_more_options)
         self.ui.more_options_button.clicked.connect(self.hide_more_options)
-        self.ui.more_options_button.setIcon(QIcon('up-arrow.svg'))
+        self.ui.more_options_button.setIcon(QIcon(os.path.join('D:\Proyectos\MATE','up-arrow.svg')))
 
     def hide_more_options(self):
         self.move_widgets_up()
         self.ui.more_options_frame.hide()
         self.ui.more_options_label.clicked.connect(self.show_more_options)
         self.ui.more_options_button.clicked.connect(self.show_more_options)
-        self.ui.more_options_button.setIcon(QIcon('downarrow.svg'))
+        self.ui.more_options_button.setIcon(QIcon(os.path.join('D:\Proyectos\MATE','downarrow.svg')))
 
     def move_widgets_down(self):
         self.ui.down_frame.setGeometry(10, 310, 521, 151)
@@ -287,7 +287,7 @@ class MainWindow(QMainWindow):
         '''
         #Desactivar los widgets mientras esté convirtiendo
         self.disable_widgets()
-        self.ui.start_button.setIcon(QIcon('stop.svg'))
+        self.ui.start_button.setIcon(QIcon(os.path.join('D:\Proyectos\MATE','stop.svg')))
 
         input_format = self.ui.input_format_text.currentItem().text().lower()
         self.check_folder(input_format)
@@ -319,7 +319,7 @@ class MainWindow(QMainWindow):
 
         # Activar de nuevo toda la interface
         self.enable_widgets()
-        self.ui.start_button.setIcon(QIcon('convert.svg'))
+        self.ui.start_button.setIcon(QIcon(os.path.join('D:\Proyectos\MATE','convert.svg')))
     
     def service_shutdown(self, signum, frame):
         '''

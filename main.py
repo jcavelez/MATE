@@ -9,6 +9,7 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+import os
 
 
 class Ui_MainWindow(object):
@@ -233,7 +234,7 @@ class Ui_MainWindow(object):
         self.input_folder_button.setAutoFillBackground(False)
         self.input_folder_button.setText("")
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("carpeta.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap(os.path.join("D:\Proyectos\MATE","carpeta.svg")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.input_folder_button.setIcon(icon)
         self.input_folder_button.setIconSize(QtCore.QSize(20, 20))
         self.input_folder_button.setCheckable(False)
@@ -478,7 +479,7 @@ class Ui_MainWindow(object):
         self.label = QtWidgets.QLabel(self.frame)
         self.label.setGeometry(QtCore.QRect(10, 0, 211, 71))
         self.label.setText("")
-        self.label.setPixmap(QtGui.QPixmap("logo.PNG"))
+        self.label.setPixmap(QtGui.QPixmap(os.path.join("D:\Proyectos\MATE", "logo.PNG")))
         self.label.setScaledContents(True)
         self.label.setObjectName("label")
         self.more_options_button = QtWidgets.QPushButton(self.centralwidget)
@@ -524,7 +525,7 @@ class Ui_MainWindow(object):
         self.more_options_button.setAutoFillBackground(False)
         self.more_options_button.setText("")
         icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap("downarrow.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon1.addPixmap(QtGui.QPixmap(os.path.join("D:\Proyectos\MATE", "downarrow.svg")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.more_options_button.setIcon(icon1)
         self.more_options_button.setIconSize(QtCore.QSize(11, 11))
         self.more_options_button.setFlat(True)
@@ -747,7 +748,7 @@ class Ui_MainWindow(object):
         self.start_button.setStyleSheet("")
         self.start_button.setText("")
         icon2 = QtGui.QIcon()
-        icon2.addPixmap(QtGui.QPixmap("convert.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon2.addPixmap(QtGui.QPixmap(os.path.join("D:\Proyectos\MATE","convert.svg")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.start_button.setIcon(icon2)
         self.start_button.setIconSize(QtCore.QSize(50, 50))
         self.start_button.setAutoRepeat(False)
