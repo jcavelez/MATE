@@ -653,7 +653,7 @@
     </property>
     <property name="icon">
      <iconset>
-      <normaloff>carpeta.svg</normaloff>carpeta.svg</iconset>
+      <normaloff>img/carpeta.svg</normaloff>img/carpeta.svg</iconset>
     </property>
     <property name="iconSize">
      <size>
@@ -1242,7 +1242,7 @@
     </property>
     <property name="icon">
      <iconset>
-      <normaloff>carpeta.svg</normaloff>carpeta.svg</iconset>
+      <normaloff>img/carpeta.svg</normaloff>img/carpeta.svg</iconset>
     </property>
     <property name="iconSize">
      <size>
@@ -1388,7 +1388,7 @@
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap>logo.PNG</pixmap>
+      <pixmap>img/logo.PNG</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>
@@ -1530,7 +1530,7 @@
     </property>
     <property name="icon">
      <iconset>
-      <normaloff>downarrow.svg</normaloff>downarrow.svg</iconset>
+      <normaloff>img/downarrow.svg</normaloff>img/downarrow.svg</iconset>
     </property>
     <property name="iconSize">
      <size>
@@ -2180,7 +2180,7 @@
      </property>
      <property name="icon">
       <iconset>
-       <normaloff>convert.svg</normaloff>convert.svg</iconset>
+       <normaloff>img/convert.svg</normaloff>img/convert.svg</iconset>
      </property>
      <property name="iconSize">
       <size>
@@ -3093,7 +3093,7 @@
      <rect>
       <x>30</x>
       <y>490</y>
-      <width>481</width>
+      <width>451</width>
       <height>23</height>
      </rect>
     </property>
@@ -3232,6 +3232,34 @@
      <string>%p%</string>
     </property>
    </widget>
+   <widget class="QLabel" name="loading_label">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>488</x>
+      <y>490</y>
+      <width>23</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="pixmap">
+     <pixmap>img/Loading_2.gif</pixmap>
+    </property>
+    <property name="scaledContents">
+     <bool>true</bool>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -3265,6 +3293,19 @@
    </property>
   </action>
  </widget>
+ <tabstops>
+  <tabstop>input_folder_text</tabstop>
+  <tabstop>input_folder_button</tabstop>
+  <tabstop>output_folder_text</tabstop>
+  <tabstop>output_folder_button</tabstop>
+  <tabstop>input_format_text</tabstop>
+  <tabstop>start_button</tabstop>
+  <tabstop>output_format_text</tabstop>
+  <tabstop>delete_processed_text</tabstop>
+  <tabstop>recurrence_text</tabstop>
+  <tabstop>more_options_button</tabstop>
+  <tabstop>more_options_label</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

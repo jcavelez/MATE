@@ -1,6 +1,7 @@
 
 from copy import copy
 import errno
+import logging
 import ffmpeg
 import os
 import struct
@@ -153,7 +154,11 @@ class Decoder:
             #'b:a': '128k'
                     }
         stream_output = ffmpeg.output(stream, output_file_name, **cmd_args)
-        ffmpeg.run(stream_output, overwrite_output=True, quiet=False)
+        try:
+            ffmpeg.run(stream_output, overwrite_output=True, quiet=False)
+        except ffmpeg.Error as e:
+            logging.error(e)
+            print("ERROR" + str(e))
 
         for l in streams_list:
                 os.remove(l)

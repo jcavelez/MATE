@@ -1,4 +1,7 @@
 mate_venv/
+dist/
+build/
+__pycache__/
 venv/
 .db
 .log

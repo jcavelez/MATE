@@ -7,7 +7,7 @@
 # imports
 #======================
 
-from PyQt5.QtGui import QIcon
+from PyQt5.QtGui import QIcon, QMovie
 from main import Ui_MainWindow  #importando archivo generado pyuic5 main.ui -o main.py
 from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog
 from PyQt5.QtCore import QThread, pyqtSignal
@@ -93,6 +93,10 @@ class MainWindow(QMainWindow):
         self.ui.more_options_button.clicked.connect(self.show_more_options)
 
         self.hide_more_options()
+        self.ui.loading = QMovie('./img/Loading_2.gif')
+        self.ui.loading_label.setMovie(self.ui.loading)
+        self.ui.loading.start()
+        self.ui.loading_label.setVisible(False)
 
         self.ui.start_button.clicked.connect(self.start_conversion)
         self.ui.input_folder_button.clicked.connect(self.set_input_folder)
@@ -153,14 +157,14 @@ class MainWindow(QMainWindow):
         self.ui.more_options_frame.show()
         self.ui.more_options_label.clicked.connect(self.hide_more_options)
         self.ui.more_options_button.clicked.connect(self.hide_more_options)
-        self.ui.more_options_button.setIcon(QIcon('up-arrow.svg'))
+        self.ui.more_options_button.setIcon(QIcon('./img/up-arrow.svg'))
 
     def hide_more_options(self):
         self.move_widgets_up()
         self.ui.more_options_frame.hide()
         self.ui.more_options_label.clicked.connect(self.show_more_options)
         self.ui.more_options_button.clicked.connect(self.show_more_options)
-        self.ui.more_options_button.setIcon(QIcon('downarrow.svg'))
+        self.ui.more_options_button.setIcon(QIcon('./img/downarrow.svg'))
 
     def move_widgets_down(self):
         self.ui.down_frame.setGeometry(10, 310, 521, 151)
@@ -292,7 +296,7 @@ class MainWindow(QMainWindow):
         '''
         #Desactivar los widgets mientras esté convirtiendo
         self.disable_widgets()
-        self.ui.start_button.setIcon(QIcon('stop.svg'))
+        self.ui.start_button.setIcon(QIcon('./img/stop.svg'))
 
         input_format = self.ui.input_format_text.currentItem().text().lower()
         self.check_folder(input_format)
@@ -304,13 +308,15 @@ class MainWindow(QMainWindow):
             path_to_file = self.get_not_processed()
             if path_to_file != None:
                 subfolder = self.detect_subfolder(path_to_file, self.ui.output_folder_text.text())
+                self.ui.loading_label.setVisible(True)
                 self.ui.message_label.setText(str(path_to_file))
                 self.update_status(path_to_file, 2)
                 deco = Decoder(path_to_file, input_format, output_path, subfolder, output_format)
                 deco.convert_to()
                 self.update_status(path_to_file,3)
                 self.delete_processed(path_to_file)
-                logging.info("Finaliza conversión de "+ path_to_file + " a " 
+                self.ui.loading_label.setVisible(False)
+                logging.info("Finaliza procesamiento de "+ path_to_file + " a " 
                     + output_format)
             else:
                 logging.info(f'No hay archivos {self.ui.input_format_text.currentItem().text()} pendientes por procesar en {self.ui.input_folder_text.text()}')
@@ -324,7 +330,7 @@ class MainWindow(QMainWindow):
 
         # Activar de nuevo toda la interface
         self.enable_widgets()
-        self.ui.start_button.setIcon(QIcon('convert.svg'))
+        self.ui.start_button.setIcon(QIcon('./img/convert.svg'))
     
     def service_shutdown(self, signum, frame):
         '''

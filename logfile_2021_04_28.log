@@ -1,0 +1,66 @@
+2021-04-28 10:03:57,846 - Buscando nuevo contenido en Carpeta Entrada: C:/Users/jcave/OneDrive/Escritorio/AudiosNice_/error
+2021-04-28 10:03:57,887 - Se encontraron 4 nuevos archivos para procesar
+2021-04-28 10:03:57,956 - Finaliza conversión de C:/Users/jcave/OneDrive/Escritorio/AudiosNice_/error/agent.12744.date.2021-04-20-11-17-01.tel..id.12802.1056.1618935421.7253.hung_up.customer.gsm a .wav
+2021-04-28 10:03:58,033 - Finaliza conversión de C:/Users/jcave/OneDrive/Escritorio/AudiosNice_/error/agent.12800.date.2021-04-20-11-43-15.tel..id.12802.6837.1618936995.8269.hung_up.customer.gsm a .wav
+2021-04-28 10:03:58,093 - ffmpeg error (see stderr output for detail)
+2021-04-28 10:03:58,102 - Finaliza conversión de C:/Users/jcave/OneDrive/Escritorio/AudiosNice_/error/agent.12833.date.2021-04-20-13-44-43.tel.9990020.id.1618944110.12117.444389.hung_up.customer.gsm a .wav
+2021-04-28 10:03:58,180 - Finaliza conversión de C:/Users/jcave/OneDrive/Escritorio/AudiosNice_/error/customer.CC_8287973.agent.12912.date.2021-04-20-10-48-24.cod.TIMEOUTACW.tel.3175152582.id.2582.8623.4921.1618933246.3913.hung_up.customer.gsm a .wav
+2021-04-28 10:03:58,185 - No hay archivos GSM pendientes por procesar en C:/Users/jcave/OneDrive/Escritorio/AudiosNice_/error
+2021-04-28 10:10:27,807 - Buscando nuevo contenido en Carpeta Entrada: C:/Users/jcave/OneDrive/Escritorio/Salida
+2021-04-28 10:10:27,816 - Se encontraron 0 nuevos archivos para procesar
+2021-04-28 10:10:27,817 - No hay archivos GSM pendientes por procesar en C:/Users/jcave/OneDrive/Escritorio/Salida
+2021-04-28 10:10:36,362 - Buscando nuevo contenido en Carpeta Entrada: C:/Users/jcave/OneDrive/Escritorio/AudiosNice_/error
+2021-04-28 10:10:36,373 - Se encontraron 1 nuevos archivos para procesar
+2021-04-28 10:10:36,436 - ffmpeg error (see stderr output for detail)
+2021-04-28 10:10:36,448 - Finaliza conversión de C:/Users/jcave/OneDrive/Escritorio/AudiosNice_/error/agent.12833.date.2021-04-20-13-44-43.tel.9990020.id.1618944110.12117.444389.hung_up.customer.gsm a .wav
+2021-04-28 10:10:36,453 - No hay archivos GSM pendientes por procesar en C:/Users/jcave/OneDrive/Escritorio/AudiosNice_/error
+2021-04-28 10:24:54,465 - Buscando nuevo contenido en Carpeta Entrada: C:/Users/jcave/OneDrive/Escritorio/AudiosNice_
+2021-04-28 10:24:54,591 - Se encontraron 12 nuevos archivos para procesar
+2021-04-28 10:24:55,364 - Finaliza procesamiento de C:/Users/jcave/OneDrive/Escritorio/AudiosNice_/agent.12662.date.2021-04-20-10-40-43.tel.999003.id.1618932478.5217.335767.hung_up.customer.gsm a .wav
+2021-04-28 10:24:55,718 - Finaliza procesamiento de C:/Users/jcave/OneDrive/Escritorio/AudiosNice_/agent.12662.date.2021-04-20-11-36-16.cod.12.tel.12883.id.12883.0420.1618936424.7879.hung_up.agent.gsm a .wav
+2021-04-28 10:25:02,106 - Finaliza procesamiento de C:/Users/jcave/OneDrive/Escritorio/AudiosNice_/agent.12675.date.2021-04-20-12-28-05.tel.999003.id.1618936202.7745.323139.hung_up.customer.gsm a .wav
+2021-04-28 10:25:02,221 - Finaliza procesamiento de C:/Users/jcave/OneDrive/Escritorio/AudiosNice_/agent.12744.date.2021-04-20-11-17-01.tel..id.12802.1056.1618935421.7253.hung_up.customer.gsm a .wav
+2021-04-28 10:25:08,354 - Finaliza procesamiento de C:/Users/jcave/OneDrive/Escritorio/AudiosNice_/agent.12773.date.2021-04-20-12-49-54.tel.999003.id.1618937481.8617.540436.hung_up.customer.gsm a .wav
+2021-04-28 10:25:08,434 - Finaliza procesamiento de C:/Users/jcave/OneDrive/Escritorio/AudiosNice_/agent.12800.date.2021-04-20-11-43-15.tel..id.12802.6837.1618936995.8269.hung_up.customer.gsm a .wav
+2021-04-28 10:25:14,530 - Finaliza procesamiento de C:/Users/jcave/OneDrive/Escritorio/AudiosNice_/agent.12860.date.2021-04-20-16-26-22.tel.999003.id.1618950419.15510.301860.hung_up.customer.gsm a .wav
+2021-04-28 10:42:33,419 - Buscando nuevo contenido en Carpeta Entrada: C:/Users/jcave/OneDrive/Escritorio/AudiosNice_
+2021-04-28 10:42:33,576 - Se encontraron 12 nuevos archivos para procesar
+2021-04-28 10:42:34,348 - Finaliza procesamiento de C:/Users/jcave/OneDrive/Escritorio/AudiosNice_/agent.12662.date.2021-04-20-10-40-43.tel.999003.id.1618932478.5217.335767.hung_up.customer.gsm a .wav
+2021-04-28 10:42:34,750 - Finaliza procesamiento de C:/Users/jcave/OneDrive/Escritorio/AudiosNice_/agent.12662.date.2021-04-20-11-36-16.cod.12.tel.12883.id.12883.0420.1618936424.7879.hung_up.agent.gsm a .wav
+2021-04-28 10:42:40,946 - Finaliza procesamiento de C:/Users/jcave/OneDrive/Escritorio/AudiosNice_/agent.12675.date.2021-04-20-12-28-05.tel.999003.id.1618936202.7745.323139.hung_up.customer.gsm a .wav
+2021-04-28 10:42:41,036 - Finaliza procesamiento de C:/Users/jcave/OneDrive/Escritorio/AudiosNice_/agent.12744.date.2021-04-20-11-17-01.tel..id.12802.1056.1618935421.7253.hung_up.customer.gsm a .wav
+2021-04-28 10:42:47,328 - Finaliza procesamiento de C:/Users/jcave/OneDrive/Escritorio/AudiosNice_/agent.12773.date.2021-04-20-12-49-54.tel.999003.id.1618937481.8617.540436.hung_up.customer.gsm a .wav
+2021-04-28 10:42:47,413 - Finaliza procesamiento de C:/Users/jcave/OneDrive/Escritorio/AudiosNice_/agent.12800.date.2021-04-20-11-43-15.tel..id.12802.6837.1618936995.8269.hung_up.customer.gsm a .wav
+2021-04-28 10:42:53,690 - Finaliza procesamiento de C:/Users/jcave/OneDrive/Escritorio/AudiosNice_/agent.12860.date.2021-04-20-16-26-22.tel.999003.id.1618950419.15510.301860.hung_up.customer.gsm a .wav
+2021-04-28 10:43:00,198 - Finaliza procesamiento de C:/Users/jcave/OneDrive/Escritorio/AudiosNice_/customer.CC_10.agent.12730.date.2021-04-20-11-44-30.cod.29.tel.3114552881.id.2881.4464.9123.1618935225.8559.hung_up.agent_tran.gsm a .wav
+2021-04-28 10:43:06,371 - Finaliza procesamiento de C:/Users/jcave/OneDrive/Escritorio/AudiosNice_/customer.CC_1073385637.agent.12841.date.2021-04-20-13-17-04.tel.3112613272.id.3272.8623.7047.1618939480.6271.hung_up.customer.gsm a .wav
+2021-04-28 10:43:06,451 - Finaliza procesamiento de C:/Users/jcave/OneDrive/Escritorio/AudiosNice_/customer.CC_8287973.agent.12912.date.2021-04-20-10-48-24.cod.TIMEOUTACW.tel.3175152582.id.2582.8623.4921.1618933246.3913.hung_up.customer.gsm a .wav
+2021-04-28 10:43:06,602 - Finaliza procesamiento de C:/Users/jcave/OneDrive/Escritorio/AudiosNice_/example.gsm a .wav
+2021-04-28 10:43:06,668 - ffmpeg error (see stderr output for detail)
+2021-04-28 10:43:06,678 - Finaliza procesamiento de C:/Users/jcave/OneDrive/Escritorio/AudiosNice_/error/agent.12833.date.2021-04-20-13-44-43.tel.9990020.id.1618944110.12117.444389.hung_up.customer.gsm a .wav
+2021-04-28 10:43:06,685 - No hay archivos GSM pendientes por procesar en C:/Users/jcave/OneDrive/Escritorio/AudiosNice_
+2021-04-28 10:44:23,650 - Buscando nuevo contenido en Carpeta Entrada: C:/Users/jcave/OneDrive/Escritorio/AudiosNice_
+2021-04-28 10:44:23,810 - Se encontraron 12 nuevos archivos para procesar
+2021-04-28 10:44:24,598 - Finaliza procesamiento de C:/Users/jcave/OneDrive/Escritorio/AudiosNice_/agent.12662.date.2021-04-20-10-40-43.tel.999003.id.1618932478.5217.335767.hung_up.customer.gsm a .wav
+2021-04-28 10:44:24,951 - Finaliza procesamiento de C:/Users/jcave/OneDrive/Escritorio/AudiosNice_/agent.12662.date.2021-04-20-11-36-16.cod.12.tel.12883.id.12883.0420.1618936424.7879.hung_up.agent.gsm a .wav
+2021-04-28 10:44:31,285 - Finaliza procesamiento de C:/Users/jcave/OneDrive/Escritorio/AudiosNice_/agent.12675.date.2021-04-20-12-28-05.tel.999003.id.1618936202.7745.323139.hung_up.customer.gsm a .wav
+2021-04-28 10:44:31,375 - Finaliza procesamiento de C:/Users/jcave/OneDrive/Escritorio/AudiosNice_/agent.12744.date.2021-04-20-11-17-01.tel..id.12802.1056.1618935421.7253.hung_up.customer.gsm a .wav
+2021-04-28 10:44:37,516 - Finaliza procesamiento de C:/Users/jcave/OneDrive/Escritorio/AudiosNice_/agent.12773.date.2021-04-20-12-49-54.tel.999003.id.1618937481.8617.540436.hung_up.customer.gsm a .wav
+2021-04-28 10:44:37,599 - Finaliza procesamiento de C:/Users/jcave/OneDrive/Escritorio/AudiosNice_/agent.12800.date.2021-04-20-11-43-15.tel..id.12802.6837.1618936995.8269.hung_up.customer.gsm a .wav
+2021-04-28 10:44:43,897 - Finaliza procesamiento de C:/Users/jcave/OneDrive/Escritorio/AudiosNice_/agent.12860.date.2021-04-20-16-26-22.tel.999003.id.1618950419.15510.301860.hung_up.customer.gsm a .wav
+2021-04-28 10:44:50,290 - Finaliza procesamiento de C:/Users/jcave/OneDrive/Escritorio/AudiosNice_/customer.CC_10.agent.12730.date.2021-04-20-11-44-30.cod.29.tel.3114552881.id.2881.4464.9123.1618935225.8559.hung_up.agent_tran.gsm a .wav
+2021-04-28 10:44:56,259 - Finaliza procesamiento de C:/Users/jcave/OneDrive/Escritorio/AudiosNice_/customer.CC_1073385637.agent.12841.date.2021-04-20-13-17-04.tel.3112613272.id.3272.8623.7047.1618939480.6271.hung_up.customer.gsm a .wav
+2021-04-28 10:44:56,348 - Finaliza procesamiento de C:/Users/jcave/OneDrive/Escritorio/AudiosNice_/customer.CC_8287973.agent.12912.date.2021-04-20-10-48-24.cod.TIMEOUTACW.tel.3175152582.id.2582.8623.4921.1618933246.3913.hung_up.customer.gsm a .wav
+2021-04-28 10:44:56,496 - Finaliza procesamiento de C:/Users/jcave/OneDrive/Escritorio/AudiosNice_/example.gsm a .wav
+2021-04-28 10:44:56,557 - ffmpeg error (see stderr output for detail)
+2021-04-28 10:44:56,567 - Finaliza procesamiento de C:/Users/jcave/OneDrive/Escritorio/AudiosNice_/error/agent.12833.date.2021-04-20-13-44-43.tel.9990020.id.1618944110.12117.444389.hung_up.customer.gsm a .wav
+2021-04-28 10:44:56,573 - No hay archivos GSM pendientes por procesar en C:/Users/jcave/OneDrive/Escritorio/AudiosNice_
+2021-04-28 10:52:32,213 - Buscando nuevo contenido en Carpeta Entrada: C:/Users/jcave/OneDrive/Escritorio/AudiosNice_
+2021-04-28 10:52:32,364 - Se encontraron 12 nuevos archivos para procesar
+2021-04-28 10:52:33,143 - Finaliza procesamiento de C:/Users/jcave/OneDrive/Escritorio/AudiosNice_/agent.12662.date.2021-04-20-10-40-43.tel.999003.id.1618932478.5217.335767.hung_up.customer.gsm a .wav
+2021-04-28 10:52:33,494 - Finaliza procesamiento de C:/Users/jcave/OneDrive/Escritorio/AudiosNice_/agent.12662.date.2021-04-20-11-36-16.cod.12.tel.12883.id.12883.0420.1618936424.7879.hung_up.agent.gsm a .wav
+2021-04-28 10:52:39,714 - Finaliza procesamiento de C:/Users/jcave/OneDrive/Escritorio/AudiosNice_/agent.12675.date.2021-04-20-12-28-05.tel.999003.id.1618936202.7745.323139.hung_up.customer.gsm a .wav
+2021-04-28 10:52:39,800 - Finaliza procesamiento de C:/Users/jcave/OneDrive/Escritorio/AudiosNice_/agent.12744.date.2021-04-20-11-17-01.tel..id.12802.1056.1618935421.7253.hung_up.customer.gsm a .wav
+2021-04-28 10:52:43,209 - Buscando nuevo contenido en Carpeta Entrada: C:/Users/jcave/OneDrive/Escritorio/AudiosNice_
+2021-04-28 10:52:43,220 - Se encontraron 7 nuevos archivos para procesar
+2021-04-28 10:52:43,298 - Finaliza procesamiento de C:/Users/jcave/OneDrive/Escritorio/AudiosNice_/agent.12800.date.2021-04-20-11-43-15.tel..id.12802.6837.1618936995.8269.hung_up.customer.gsm a .wav
